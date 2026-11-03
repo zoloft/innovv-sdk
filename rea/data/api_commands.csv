@@ -1,0 +1,128 @@
+cmd,name,params,response,evidence,notes
+1001,Capture photo,none (app sends par=1),<Function><Cmd>1001</Cmd><Status>0</Status><File><NAME>NAME</NAME><FPATH>A:\PATH</FPATH></File><FREEPICNUM>N</FREEPICNUM></Function>,FW table/handler 0x1a8de18; app k.s(),"Errors: -11 storage full, -12 folder full, -5 write fail, -1 generic."
+1002,Set photo resolution,par=0..5,<Function><Cmd>1002</Cmd><Status>0/err</Status></Function>,FW menu PHOTO_SIZE; app k.o0(),"0=12M,1=10M,2=8M,3=5M,4=3M,5=VGA."
+1003,Free photo slots,none,<Function><Cmd>1003</Cmd><Status>0</Status><Value>N</Value></Function>,FW handler 0x1a8dac4,Frames remaining for current photo size.
+2001,Start/stop recording,"par=1 start, par=0 stop",<Function><Cmd>2001</Cmd><Status>0/err</Status></Function>,FW table; app k.f0(),"Common errors -7 full, -8 write, -9 slow."
+2002,Set video resolution,par=<index>,<Function><Cmd>2002</Cmd><Status>0/err</Status></Function>,FW menu Resolution; K5 JSON,"K5 app uses 20/22/21 for dual-camera combinations. Firmware menu id 26 lists a different single-camera set (2,6,7,9,10,11,13,15,16,17,18,19,20,29). Use K5 JSON or probe 3030/3031."
+2003,Loop recording,par=0..4,<Function><Cmd>2003</Cmd><Status>0/err</Status></Function>,FW menu Loop Recording; K5 JSON,"0=OFF,1=1min,2=3min,3=5min,4=10min."
+2004,HDR/WDR,par=0/1,<Function><Cmd>2004</Cmd><Status>0/err</Status></Function>,FW table menu_id 30; public docs,Not exposed in K5 JSON; support likely.
+2005,Exposure,par=0..12,<Function><Cmd>2005</Cmd><Status>0/err</Status></Function>,FW menu Exposure,"0=+2.0,1=+1.6,2=+1.3,3=+1.0,4=+0.6,5=+0.3,6=0.0,7=-0.3,8=-0.6,9=-1.0,10=-1.3,11=-1.6,12=-2.0."
+2006,Motion detection,par=0/1,<Function><Cmd>2006</Cmd><Status>0/err</Status></Function>,FW table menu_id 36; public docs,Not exposed in K5 JSON.
+2007,Record audio,par=0/1,<Function><Cmd>2007</Cmd><Status>0/err</Status></Function>,FW table menu_id 36/37; public docs,K5 JSON uses 8306 for mic volume instead.
+2008,Date/time stamp,par=0/1,<Function><Cmd>2008</Cmd><Status>0/err</Status></Function>,K5 JSON; public docs,K5 UI switch 'Date/time'.
+2009,Max record time,none,<Function><Cmd>2009</Cmd><Status>0</Status><Value>seconds</Value></Function>,FW handler 0x1a8db0c,Seconds available at current bitrate.
+2010,Live-view size,par=<enum>,<Function><Cmd>2010</Cmd><Status>0/err</Status></Function>,FW table; public docs,Live view resolution enum.
+2011,G-sensor sensitivity,par=0..10,<Function><Cmd>2011</Cmd><Status>0/err</Status></Function>,FW menu G-sensor Sensitivity; K5 JSON,"0=OFF,1..10 levels. K5 UI shows high/mid/low/off."
+2012,Auto recording,par=0/1,<Function><Cmd>2012</Cmd><Status>0/err</Status></Function>,FW table; public docs,Not exposed in K5 JSON.
+2013,Video bitrate,par/str (firmware-specific),<Function><Cmd>2013</Cmd><Status>0/err</Status></Function>,FW table; public docs,String bitrate in older SDKs; K5 uses 8200 preset.
+2014,Live-view bitrate,par/str (firmware-specific),<Function><Cmd>2014</Cmd><Status>0/err</Status></Function>,FW table; public docs,K5 uses 8200 preset.
+2015,Start/stop live view,par=1/0,<Function><Cmd>2015</Cmd><Status>0/err</Status></Function>,FW table; public docs,May be optional when RTSP is used directly.
+2016,Current recording time,none,<Function><Cmd>2016</Cmd><Status>0</Status><Value>seconds</Value></Function>,FW handler 0x1a8e02c; app k.L(),Returns 0 when not recording.
+2017,Raw snapshot trigger,par=1/0,<Function><Cmd>2017</Cmd><Status>0/err</Status></Function>,FW table; app k.y0(),Triggers raw-encoded JPG capture.
+2018,Get raw encoded JPEG,none,image/jpeg (or XML error),FW handler 0x1a8ce58,Returns JPEG bytes.
+2019,Live-view URLs,none,<LIST><MovieLiveViewLink>URL</MovieLiveViewLink><PhotoLiveViewLink>URL</PhotoLiveViewLink></LIST>,FW handler 0x1a8c134; app k.Q(),"Movie link is RTSP or HTTP:8192; photo link is HTTP:8192 when rear camera present, else RTSP. Use the returned URLs."
+2020,Contrast (HTTP) / recording-time event (TCP 3333),HTTP: par=0/25/50/75/100. Event: none,HTTP: <Function><Cmd>2020</Cmd><Status>0</Status></Function>. Event: <Function><Cmd>2020</Cmd><Status>seconds</Status></Function>,FW menu Contrast; app event k.d0(),Same ID used for two channels; do not confuse.
+2021,Two-way audio control,par=<enum>,<Function><Cmd>2021</Cmd><Status>0/err</Status></Function>,FW table; public docs,Not exposed in K5 JSON.
+2022,Two-way audio sample rate,par=<enum>,<Function><Cmd>2022</Cmd><Status>0/err</Status></Function>,FW table; public docs,Not exposed in K5 JSON.
+2023,Flip mirror,par=<enum>,<Function><Cmd>2023</Cmd><Status>0/err</Status></Function>,FW table; public docs,K5 uses 8006/8007 for front/rear mirror.
+2024,Image quality,par=<enum>,<Function><Cmd>2024</Cmd><Status>0/err</Status></Function>,FW table; public docs,Not exposed in K5 JSON.
+2025,Bitrate control,par=<enum>,<Function><Cmd>2025</Cmd><Status>0/err</Status></Function>,FW table,Not exposed in K5 JSON.
+2026,RTSP audio control,par=0/1,<Function><Cmd>2026</Cmd><Status>0/err</Status></Function>,FW table,Not exposed in K5 JSON.
+3001,Change mode,"par=0 photo,1 video,2 playback,3 video timelapse,4 photo timelapse,5/6 model-specific",<Function><Cmd>3001</Cmd><Status>0/err</Status></Function>,FW table; app k.w0(); public docs,K5 app maps modes via G0().
+3002,Query supported commands,none,<Function><Cmd>N</Cmd>...</Function> list (A:\query.xml),FW handler 0x1a8be74,Used by app as a capability/connectivity check.
+3003,Set Wi-Fi SSID,str=<ssid> (max 32),<Function><Cmd>3003</Cmd><Status>0/err</Status></Function>,FW table; K5 JSON; app k.v0(),Follow with 3021 to persist.
+3004,Set Wi-Fi password,str=<passphrase> (8..26),<Function><Cmd>3004</Cmd><Status>0/err</Status></Function>,FW table; K5 JSON; app k.u0(),Follow with 3021 to persist.
+3005,Set date,str=yyyy-MM-dd,<Function><Cmd>3005</Cmd><Status>0/err</Status></Function>,FW table; app k.p0(),Date/time are separate commands.
+3006,Set time,str=HH:mm:ss,<Function><Cmd>3006</Cmd><Status>0/err</Status></Function>,FW table; app k.p0(),
+3007,Auto power off,"par=0 off,1 3min,2 5min,3 10min,4 now",<Function><Cmd>3007</Cmd><Status>0/err</Status></Function>,FW menu; app k.x0(),par=4 powers off immediately.
+3008,Language,par=<index>,<Function><Cmd>3008</Cmd><Status>0/err</Status></Function>,FW menu; public docs,
+3009,TV format,par=<index>,<Function><Cmd>3009</Cmd><Status>0/err</Status></Function>,FW menu; public docs,
+3010,Format SD card,par=1,<Function><Cmd>3010</Cmd><Status>0/err</Status></Function>,FW table; app k.x(),Destructive. K5 UI asks confirmation.
+3011,Reset to defaults / system reset,par=1,<Function><Cmd>3011</Cmd><Status>0/err</Status></Function>,FW table; app k.g0(),Destructive: resets settings.
+3012,Firmware version,none,<Function><Cmd>3012</Cmd><Status>0</Status><String>version</String></Function>,FW handler 0x1a8d6ac; app k.R(),K5 RTOS string: IK5.5G.20210827.V1.1.12.
+3013,Firmware update trigger,none,<Function><Cmd>3013</Cmd><Status>0/err</Status></Function>,FW table,Caution: triggers update flow; exact precondition not established.
+3014,Get all current values,none,<Function><Cmd>N</Cmd><Status>V</Status></Function> repeated,FW handler 0x1a8d89c; app k.J(),"Status is the current value, not an error code. Cache this; it is a full dump."
+3015,File list,none,<LIST><ALLFile><File><NAME>N</NAME><FPATH>A:\P</FPATH><SIZE>bytes</SIZE><TIMECODE>epoch</TIMECODE><TIME>yyyy/MM/dd HH:mm:ss</TIME><ATTR>n</ATTR></File></ALLFile>...</LIST>,FW handler 0x1a8c244; app h.java,Returns all files; app filters by extension client-side. Response is built into a bounded buffer.
+3016,Heartbeat,none,<Function><Cmd>3016</Cmd><Status>0</Status></Function>,FW handler 0x1a8da84; app hyhHttp,Fast connectivity check.
+3017,Free SD space,none,<Function><Cmd>3017</Cmd><Status>0</Status><Value>bytes</Value></Function>,FW handler 0x1a8db54; app k.N(),64-bit byte count.
+3018,Reconnect Wi-Fi,none,<Function><Cmd>3018</Cmd><Status>0/err</Status></Function>,FW table; public docs,Applies pending SSID/password changes.
+3019,Battery level,none,<Function><Cmd>3019</Cmd><Status>0</Status><Value>0..5</Value></Function>,FW handler 0x1a8dfb0; public docs,"0=full,1=medium,2=low,3=empty,4=exhausted,5=charging."
+3020,Event notification (TCP 3333),none (event),<Function><Cmd>3020</Cmd><Status>code</Status></Function>,app event k.d0(); ly/l.java,"Status codes: 1 record start,2 record stop,8 sensor count,9 card insert,10 card remove,11/12 protect on/off,13/14 GPS on/off,16 photo download,21/22 timelapse. Some mappings inferred."
+3021,Save settings,none,<Function><Cmd>3021</Cmd><Status>0/err</Status></Function>,FW table; app k.m0(),Persist after 3003/3004/3032 etc.
+3022,Hardware capability,none,<Function><Cmd>3022</Cmd><Status>0</Status><Value>19</Value></Function>,FW handler 0x1a8dff8,"Observed K5 handler returns 0x13=19. Older NT9666x docs show 3; treat as a capability bitmask/code, not a fixed version."
+3023,Remove last user,none,<Function><Cmd>3023</Cmd><Status>0/err</Status></Function>,FW table; public docs,
+3024,SD card state,none,<Function><Cmd>3024</Cmd><Status>0</Status><Value>0/1/2</Value></Function>,FW handler 0x1a8e0c4; app k.D(),"0=removed,1=inserted/normal,2=locked/error."
+3025,Get download URL,none,<String>http://115.29.201.46:8020/download/filedesc.xml</String> (observed firmware string),FW handler 0x1a8e2b8,Hard-coded vendor URL in this firmware; app does not use it for K5.
+3026,Get firmware update path,none,<String>http://<ip><path></String>,FW handler 0x1a8e2e8,Used by update flow; not used by stock K5 UI.
+3028,Live-view source,"par=0 F,1 R,2 F/R,3 R/F",<Function><Cmd>3028</Cmd><Status>0/err</Status></Function>,FW menu Live Video Source; K5 JSON,
+3029,Get Wi-Fi info,none,<LIST><SSID><![CDATA[ssid]]></SSID><PASSPHRASE><![CDATA[pass]]></PASSPHRASE></LIST>,FW handler 0x1a8e81c; app k.V(),Plaintext credentials.
+3030,Supported resolutions,none,<LIST><Item><Name>..</Name><Index>n</Index><Size>W*H</Size><FrameRate>n</FrameRate><Type>n</Type></Item>...</LIST>,FW handler 0x1a8e8b8; app k.z(),
+3031,Get setting menu,str=all or str=<key>,<LIST><Item><Cmd>N</Cmd><Name>..</Name><MenuList><Option><Index>V</Index><Id>label</Id></Option>...</MenuList></Item>...</LIST>,FW handler 0x1a8ea98; app k.P(),Stock app calls &str=all.
+3032,Set Wi-Fi STA SSID:pass,str=SSID:password,<Function><Cmd>3032</Cmd><Status>0/err</Status></Function>,FW table; app k.t0(),Follow with 3021.
+3033,Set Wi-Fi connect mode,par=<enum>,<Function><Cmd>3033</Cmd><Status>0/err</Status></Function>,FW table; public docs,
+3034,Auto-test / command done,par=<n>,<Function><Cmd>3034</Cmd><Status>0/err</Status></Function>,FW handler 0x1a8eea0,Diagnostic/auto-test command; handler logs XML_AutoTestCmdDone. Not used by stock K5 UI.
+3037,Current mode/status,none,<Function><Cmd>3037</Cmd><Status>0</Status><Value>n</Value></Function>,FW handler 0x1a8e178; app k.X(),Bitmask 0..4; app maps 4 to 0 and other values through.
+3038,Wi-Fi AP scan,none,<List><AP_index><SSID>..</SSID><Auth_type>n</Auth_type><RSSI>n dBm</RSSI></AP_index>...</List>,FW handler 0x1a8e39c,Scan result list.
+3041,Car number / custom ID (legacy),str=<text>,<Function><Cmd>3041</Cmd><Status>0/err</Status></Function>,app innovv.a.q0(); commented out in K5 JSON,K5 JSON uses 8219 instead.
+4001,JPEG thumbnail,GET /<FPATH>?custom=1&cmd=4001,image/jpeg,app h.java; FW handler 0x1a8c530,Thumbnail URL = download URL + ?custom=1&cmd=4001.
+4002,JPEG preview/screen,GET /<FPATH>?custom=1&cmd=4002,image/jpeg,FW handler 0x1a8c530; app h.java,Same handler as 4001.
+4003,Delete one file,str=A:\path,<Function><Cmd>4003</Cmd><Status>0/err</Status></Function>,FW handler 0x1a8dba0; app k.w(),Errors observed in handler: -1 (not found/open failure) and -5 (path/argument error). Public NT9666x docs mention -4 for file errors; treat negatives as failure.
+4004,Delete all files,none (stock app); path parameter not established,<Function><Cmd>4004</Cmd><Status>0/err</Status></Function>,FW handler 0x1a8dcfc,Destructive. Not used by stock K5 UI (it deletes selected files one-by-one with 4003). Exact path/filter parameter not established.
+4005,Movie file info,GET /<FPATH without A: and with />?custom=1&cmd=4005,"<Function><Cmd>4005</Cmd><Status>0</Status><String>Width:W, Height:H, Length:L sec</String></Function>",FW handler 0x1a8d42c; app k.F(); MediaItem.source,The stock app passes the relative file path as the URL path (not &str=). Response is an XML <String> with Width/Height/Length.
+5001,Upload file,upload body (POST/multipart suspected; not established),XML_UploadFile result,FW handler 0x1a8ef84,"Not used by the stock K5 UI. The RTOS handler names are XML_UploadFile / XML_UploadAudio; exact HTTP framing, mime type and segment count are not established. Test on a spare device only."
+5002,Upload audio,upload body (POST/multipart suspected; not established),XML_UploadAudio result,FW handler 0x1a8f204,"Not used by the stock K5 UI. The RTOS handler names are XML_UploadFile / XML_UploadAudio; exact HTTP framing, mime type and segment count are not established. Test on a spare device only."
+8003,GPS enable,par=1/0,<Function><Cmd>8003</Cmd><Status>0/err</Status></Function>,FW menu GPS; K5 JSON,"1=ON,0=OFF."
+8004,GPS status,none,<Function><Cmd>8004</Cmd><Status>0</Status><Value>0/1</Value></Function>,FW handler 0x1a8f468; app k.t(),App checks Value==1.
+8005,Speed unit,"par=0 km/h,1 mph",<Function><Cmd>8005</Cmd><Status>0/err</Status></Function>,FW menu Speed Unit; K5 JSON,
+8006,Front camera mirror,"par=0 off,1 mirror,2 flip,3 mirror+flip",<Function><Cmd>8006</Cmd><Status>0/err</Status></Function>,FW menu Front Mirror; K5 JSON,
+8007,Rear camera mirror,"par=0 off,1 mirror,2 flip,3 mirror+flip",<Function><Cmd>8007</Cmd><Status>0/err</Status></Function>,FW menu Rear Mirror; K5 JSON,
+8008,Protection/status flag,none,<Function><Cmd>8008</Cmd><Status>0</Status><Value>0/1</Value></Function>,FW handler 0x1a8f528; app k.u(),Exact meaning not established; app treats 1 as true.
+8010,Movie format,"par=0 MP4,1 TS",<Function><Cmd>8010</Cmd><Status>0/err</Status></Function>,FW menu Movie Format; K5 JSON,
+8011,Wi-Fi off timer,"par=0 on,1 5min,2 10min",<Function><Cmd>8011</Cmd><Status>0/err</Status></Function>,FW menu WifiOff Time; K5 JSON,0=On/never off (app label 'On').
+8058,GPS info,none,<Function><timestamp>epoch</timestamp><lng>f</lng><lat>f</lat><alt>f</alt><spd>f</spd><SAT><SatNum>n</SatNum><SNR>n</SNR></SAT></Function>,FW handler 0x1a8f5f0,Current GPS fix; zeros if no fix.
+8200,Bitrate preset,"par=0 low,1 normal,2 high,3 maximum",<Function><Cmd>8200</Cmd><Status>0/err</Status></Function>,FW menu Bitrate; K5 JSON,
+8201,Wi-Fi band,"par=0 off,1 2.4GHz,2 5GHz",<Function><Cmd>8201</Cmd><Status>0/err</Status></Function>,FW menu Wi-Fi; K5 JSON,K5 app labels 2.4G/5.8G.
+8206,Time-lapse recording interval,"par=0 off,1 100ms,2 200ms,3 300ms,4 500ms,5 1s",<Function><Cmd>8206</Cmd><Status>0/err</Status></Function>,FW menu Time-lapse Recording; K5 JSON,
+8210,GPS info stamp,"par=0 off,1 all,2 speed,3 coordinates",<Function><Cmd>8210</Cmd><Status>0/err</Status></Function>,FW menu GPS Info Stamp; K5 JSON,
+8215,Light frequency,"par=0 50Hz,1 60Hz",<Function><Cmd>8215</Cmd><Status>0/err</Status></Function>,FW menu Frequency; K5 JSON,
+8219,Video watermark text,str=<text> (max 11),<Function><Cmd>8219</Cmd><Status>0/err</Status></Function>,app innovv.a.q0(); K5 JSON,Stock app replaces spaces with '*'. Follow with 3021.
+8228,Get car number,none,<Function><Cmd>8228</Cmd><Status>0</Status><String>carNumber</String></Function>,FW handler 0x1a8f268,
+8229,Get custom string,none,<Function><Cmd>8229</Cmd><Status>0</Status><String>text</String></Function>,FW handler 0x1a8f564; app ly/a.java,
+8304,Movie encode,"par=0 H264,1 H265",<Function><Cmd>8304</Cmd><Status>0/err</Status></Function>,FW menu Movie Encode; K5 JSON,
+8306,Mic volume,"par=0 off,1 20%,2 40%,3 60%,4 80%,5 100%",<Function><Cmd>8306</Cmd><Status>0/err</Status></Function>,FW menu Movie Audio; K5 JSON,
+8307,Get GPS speed,none,<Function><Cmd>8307</Cmd><Status>0</Status><Value>n</Value></Function>,FW handler 0x1a8f2f4,
+8308,Get GPS coordinates,none,<Function><Cmd>8308</Cmd><Status>0</Status><String>N:.. E:..</String></Function>,FW handler 0x1a8f3ac,
+8309,Parking mode,par=0/1,<Function><Cmd>8309</Cmd><Status>0/err</Status></Function>,FW menu Parking Mode; K5 JSON,
+8311,Contrast,par=0/25/50/75/100,<Function><Cmd>8311</Cmd><Status>0/err</Status></Function>,FW menu Contrast,
+8312,Saturation,"par=0 high,1 normal,2 low",<Function><Cmd>8312</Cmd><Status>0/err</Status></Function>,FW menu Saturation,
+8313,Sharpness,"par=0 sharp,1 normal,2 soft",<Function><Cmd>8313</Cmd><Status>0/err</Status></Function>,FW menu Sharpness,
+8314,White balance,"par=0 auto,1 daylight,2 cloudy,3 tungsten,4 max",<Function><Cmd>8314</Cmd><Status>0/err</Status></Function>,FW menu WB,
+8315,Storage capacity,none,<Function><Cmd>8315</Cmd><Status>0</Status><Value>total</Value><Value1>used</Value1></Function>,FW handler 0x1a8f4ac; app innovv.a.E0/F0,App computes Value-Value1; exact units/meaning inferred.
+8317,EIS,par=0/1,<Function><Cmd>8317</Cmd><Status>0/err</Status></Function>,FW menu EIS,
+8318,Reset shortcut menu,none,<Function><Cmd>8318</Cmd><Status>0/err</Status></Function>,FW table; app CMD_RESET_SHORTCUT_MENU,
+8320,GPS update frequency,"par=0 1Hz,1 2Hz,2 3Hz,3 4Hz,4 5Hz",<Function><Cmd>8320</Cmd><Status>0/err</Status></Function>,FW menu gps update freq; K5 JSON,
+8321,G-sensor info stamp,par=0/1,<Function><Cmd>8321</Cmd><Status>0/err</Status></Function>,FW menu Gsensor Info Stamp; K5 JSON,
+8322,Front raw JPEG snapshot,GET /?custom=1&cmd=8322,image/jpeg,FW handler 0x1a8d02c,Not the Wi-Fi SSID; that is 3003/3029.
+8323,Rear raw JPEG snapshot,GET /?custom=1&cmd=8323,image/jpeg,FW handler 0x1a8d1d0,Not the Wi-Fi password.
+9019,Battery change event (TCP 3333),none (event),<Function><Cmd>9019</Cmd><Status>level</Status></Function>,app event k.d0(); ly/l.java,Battery level notification; same value scale as 3019 (0=full … 5=charging).
+8203,Firmware-only command 8203,unknown,unknown,FW command table; menu id 39,Not in the K5 app; menu name/options not present in the decoded menu table.
+8204,Firmware-only command 8204,unknown,unknown,FW command table; menu id 165,Not in the K5 app; purpose not established.
+8205,Firmware-only command 8205,unknown,unknown,FW command table; menu id 164,Not in the K5 app; purpose not established.
+8207,Firmware-only command 8207,unknown,unknown,FW command table; menu id 174,Not in the K5 app; purpose not established.
+8211,Firmware-only command 8211,unknown,unknown,FW command table; menu id 72,Not in the K5 app; purpose not established.
+8212,Firmware-only command 8212,unknown,unknown,FW command table; menu id 171,Not in the K5 app; purpose not established.
+8213,Firmware-only command 8213,unknown,unknown,FW command table; menu id 176,Not in the K5 app; purpose not established.
+8214,Firmware-only command 8214,unknown,unknown,FW command table; menu id 65,Not in the K5 app; purpose not established.
+8216,Firmware-only command 8216,unknown,unknown,FW command table; menu id 40,Not in the K5 app; purpose not established.
+8217,Firmware-only command 8217,unknown,unknown,FW command table; menu id 178,Not in the K5 app; purpose not established.
+8218,Firmware-only command 8218,unknown,unknown,FW command table; menu id 0,Not in the K5 app; purpose not established.
+8220,Exposure variant (second camera?),par=<index>,<Function><Cmd>8220</Cmd><Status>0/err</Status></Function>,FW command table; menu id 5 (Exposure),Not in the K5 app; likely a second-camera/exposure variant.
+8221,Firmware-only command 8221,unknown,unknown,FW command table; menu id 177,Not in the K5 app; purpose not established.
+8222,Firmware-only command 8222,unknown,unknown,FW command table; menu id 179,Not in the K5 app; purpose not established.
+8223,Firmware-only command 8223,unknown,unknown,FW command table; menu id 180,Not in the K5 app; purpose not established.
+8224,Firmware-only command 8224,unknown,unknown,FW command table; menu id 181,Not in the K5 app; purpose not established.
+8225,Firmware-only command 8225,unknown,unknown,FW command table; menu id 182,Not in the K5 app; purpose not established.
+8226,Firmware-only command 8226,unknown,unknown,FW command table; menu id 183,Not in the K5 app; purpose not established.
+8230,Firmware-only command 8230,unknown,unknown,FW command table; menu id 0,Not in the K5 app; purpose not established.
+8319,Mirror variant (second camera?),par=<index>,<Function><Cmd>8319</Cmd><Status>0/err</Status></Function>,FW command table; menu id 6 (Rear Mirror),Not in the K5 app; likely a second-camera/rear-mirror variant.
+10000,Firmware-only command 10000,unknown,unknown,FW command table; menu id 194,Not in the K5 app; purpose not established.

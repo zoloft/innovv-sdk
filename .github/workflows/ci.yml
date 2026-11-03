@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  jvm-android:
+    name: JVM tests + Android
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: android-actions/setup-android@v3
+      - uses: gradle/actions/setup-gradle@v4
+      - name: JVM tests
+        run: ./gradlew :innovv-sdk:jvmTest
+      - name: Android compile
+        run: ./gradlew :innovv-sdk:compileAndroidMain
+      - name: Android host tests
+        run: ./gradlew :innovv-sdk:testAndroidHostTest
+      - name: Publication check
+        run: ./gradlew :innovv-sdk:publishToMavenLocal
+
+  ios:
+    name: iOS compile + framework
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v4
+      - name: iOS klibs
+        run: ./gradlew :innovv-sdk:compileKotlinIosArm64 :innovv-sdk:compileKotlinIosSimulatorArm64
+      - name: iOS simulator framework
+        run: ./gradlew :innovv-sdk:linkDebugFrameworkIosSimulatorArm64

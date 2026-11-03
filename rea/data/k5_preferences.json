@@ -1,0 +1,532 @@
+{
+  "preferences": [
+    {
+      "note": "WIFI",
+      "name_trn": "pref_wifi",
+      "ui": "UIHeader"
+    },
+    {
+      "note": "WiFi名设置",
+      "name_trn": "pref_wifi_name",
+      "cmd": "3003",
+      "digits": "0123456789QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm_,:?!/.&*+$@^=~<>[]{}|\\\"\"",
+      "maxLength": 32,
+      "tips": "WiFi名长度必须小于等于32位,使用字母,数字或_,:?!/.&*+$@^=~<>[]{}|\\\"\"",
+      "tips_trn": "pref_tips_wifi_name",
+      "ui": "UIInput"
+    },
+    {
+      "note": "WiFi密码",
+      "name_trn": "pref_wifi_password",
+      "cmd": "3004",
+      "digits": "0123456789QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm_,:?!/.&*+$@^=~<>[]{}|\\\"\"",
+      "maxLength": 26,
+      "minLength": 8,
+      "tips": "WiFi密码长度必须大于8位小于等于26位,使用字母,数字或_,:?!/.&*+$@^=~<>[]{}|\\\"\"",
+      "tips_trn": "pref_tips_wifi_password",
+      "ui": "UIInput"
+    },
+    {
+      "note": "频率",
+      "name_trn": "pref_frequency",
+      "cmd": "8201",
+      "ui": "UIList",
+      "items": [
+        {
+          "value": "2.4G",
+          "key": "1"
+        },
+        {
+          "value": "5.8G",
+          "key": "2"
+        }
+      ]
+    },
+    {
+      "note": "WiFi开启",
+      "name_trn": "pref_wifi_open",
+      "cmd": "8011",
+      "ui": "UIList",
+      "items": [
+        {
+          "value": "On",
+          "strRes": "pref_on"
+        },
+        {
+          "value": "5 Min",
+          "strRes": "pref_5min"
+        },
+        {
+          "value": "10 Min",
+          "strRes": "pref_10min"
+        }
+      ]
+    },
+    {
+      "note": "摄像头设置",
+      "name_trn": "pref_camera",
+      "ui": "UIHeader"
+    },
+    {
+      "note": "分辨率",
+      "name_trn": "pref_resolution",
+      "cmd": "2002",
+      "ui": "UIList",
+      "items": [
+        {
+          "value": "2160P30+1080P30",
+          "key": "20"
+        },
+        {
+          "value": "1440P30+1080P30",
+          "key": "22"
+        },
+        {
+          "value": "1080P30+1080P30",
+          "key": "21"
+        }
+      ]
+    },
+    {
+      "note": "比特率",
+      "name_trn": "pref_bitrate",
+      "cmd": "8200",
+      "ui": "UIList",
+      "items": [
+        {
+          "value": "低",
+          "strRes": "pref_low"
+        },
+        {
+          "value": "普通",
+          "strRes": "pref_normal"
+        },
+        {
+          "value": "高",
+          "strRes": "pref_height"
+        },
+        {
+          "value": "最高",
+          "strRes": "pref_maximum"
+        }
+      ]
+    },
+    {
+      "note": "前置摄像头",
+      "name_trn": "pref_text_camera_front_mirror",
+      "cmd": "8006",
+      "ui": "UIList",
+      "items": [
+        {
+          "value": "正常",
+          "strRes": "pref_normality"
+        },
+        {
+          "value": "镜像",
+          "strRes": "pref_mirror"
+        },
+        {
+          "value": "翻转镜像",
+          "strRes": "pref_mirror_flip"
+        },
+        {
+          "value": "翻转正向",
+          "strRes": "pref_forward_flip"
+        }
+      ]
+    },
+    {
+      "note": "后置摄像头",
+      "name_trn": "pref_text_camera_rear_mirror",
+      "cmd": "8007",
+      "ui": "UIList",
+      "items": [
+        {
+          "value": "正常",
+          "strRes": "pref_normality"
+        },
+        {
+          "value": "镜像",
+          "strRes": "pref_mirror"
+        },
+        {
+          "value": "翻转镜像",
+          "strRes": "pref_mirror_flip"
+        },
+        {
+          "value": "翻转正向",
+          "strRes": "pref_forward_flip"
+        }
+      ]
+    },
+    {
+      "note": "录像设置",
+      "name_trn": "pref_recording_settings",
+      "ui": "UIHeader"
+    },
+    {
+      "note": "循环视频",
+      "name_trn": "pref_loop_recording",
+      "cmd": "2003",
+      "ui": "UIList",
+      "items": [
+        {
+          "value": "关闭",
+          "strRes": "pref_off"
+        },
+        {
+          "value": "1Min",
+          "strRes": "pref_1min"
+        },
+        {
+          "value": "3Min",
+          "strRes": "pref_3min"
+        },
+        {
+          "value": "5Min",
+          "strRes": "pref_5min"
+        },
+        {
+          "value": "10Min",
+          "strRes": "pref_10min"
+        }
+      ]
+    },
+    {
+      "note": "视频格式",
+      "name_trn": "pref_video_format",
+      "cmd": "8010",
+      "ui": "UIList",
+      "items": [
+        {
+          "value": "MP4"
+        },
+        {
+          "value": "TS"
+        }
+      ]
+    },
+    {
+      "note": "编码方式",
+      "name_trn": "pref_encode_mode",
+      "cmd": "8304",
+      "ui": "UIList",
+      "items": [
+        {
+          "value": "H.264"
+        },
+        {
+          "value": "H.265"
+        }
+      ]
+    },
+    {
+      "note": "缩时录像",
+      "name_trn": "pref_time_lapse_video",
+      "cmd": "8206",
+      "ui": "UIList",
+      "items": [
+        {
+          "value": "关闭",
+          "strRes": "pref_off"
+        },
+        {
+          "value": "100ms",
+          "strRes": "pref_100ms"
+        },
+        {
+          "value": "200ms",
+          "strRes": "pref_200ms"
+        },
+        {
+          "value": "300ms",
+          "strRes": "pref_300ms"
+        },
+        {
+          "value": "500ms",
+          "strRes": "pref_500ms"
+        },
+        {
+          "value": "1s",
+          "strRes": "pref_1s"
+        }
+      ]
+    },
+    {
+      "note": "预览镜头切换",
+      "name_trn": "pref_preview_lens_switching",
+      "cmd": "3028",
+      "ui": "UIList",
+      "items": [
+        {
+          "value": "F"
+        },
+        {
+          "value": "R"
+        },
+        {
+          "value": "F&R"
+        },
+        {
+          "value": "R&F"
+        }
+      ]
+    },
+    {
+      "note": "Mic音量",
+      "name_trn": "pref_audio",
+      "cmd": "8306",
+      "ui": "UIList",
+      "items": [
+        {
+          "value": "关",
+          "strRes": "pref_off"
+        },
+        {
+          "value": "20%"
+        },
+        {
+          "value": "40%"
+        },
+        {
+          "value": "60%"
+        },
+        {
+          "value": "80%"
+        },
+        {
+          "value": "100%"
+        }
+      ]
+    },
+    {
+      "note": "日期时间",
+      "name_trn": "pref_date_and_time",
+      "cmd": "2008",
+      "ui": "UISwitch"
+    },
+    {
+      "enable": 1,
+      "note": "速度显示",
+      "name_trn": "pref_speed_display",
+      "cmd": "custom_speed_display",
+      "ui": "UIList",
+      "items": [
+        {
+          "value": "关闭",
+          "strRes": "pref_off"
+        },
+        {
+          "value": "文本显示",
+          "strRes": "pref_text_display"
+        },
+        {
+          "value": "仪表显示",
+          "strRes": "pref_meter_display"
+        }
+      ]
+    },
+    {
+      "note": "速度单位",
+      "name_trn": "pref_speed_unit",
+      "cmd": "8005",
+      "ui": "UIList",
+      "items": [
+        {
+          "value": "公里每小时",
+          "strRes": "pref_km_h"
+        },
+        {
+          "value": "英里每小时",
+          "strRes": "pref_mp_h"
+        }
+      ]
+    },
+    {
+      "note": "GPS水印",
+      "name_trn": "pref_gps_watermark",
+      "cmd": "8210",
+      "ui": "UIList",
+      "items": [
+        {
+          "value": "关闭",
+          "strRes": "pref_off"
+        },
+        {
+          "value": "全部",
+          "strRes": "pref_all"
+        },
+        {
+          "value": "速度",
+          "strRes": "pref_speed"
+        },
+        {
+          "value": "坐标",
+          "strRes": "pref_coordinate"
+        }
+      ]
+    },
+    {
+      "note": "GPS",
+      "name_trn": "pref_gps",
+      "cmd": "8003",
+      "ui": "UISwitch"
+    },
+    {
+      "note": "GPS Hz",
+      "name_trn": "pref_gps_hz",
+      "cmd": "8320",
+      "ui": "UIList",
+      "items": [
+        {
+          "value": "1 Hz"
+        },
+        {
+          "value": "2 Hz"
+        },
+        {
+          "value": "3 Hz"
+        },
+        {
+          "value": "4 Hz"
+        },
+        {
+          "value": "5 Hz"
+        }
+      ]
+    },
+    {
+      "note": "视频标示",
+      "name_trn": "pref_car_id",
+      "cmd": "8219",
+      "digits": "0123456789QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm",
+      "maxLength": 11,
+      "ui": "UIInput"
+    },
+    {
+      "note": "存储",
+      "name_trn": "pref_storage",
+      "ui": "UIHeader"
+    },
+    {
+      "note": "卡的容量",
+      "name_trn": "pref_card_capacity",
+      "cmd": "sdcard_size",
+      "ui": "UIText"
+    },
+    {
+      "note": "剩余容量",
+      "name_trn": "pref_remaining_capacity",
+      "cmd": "sdcard_free_size",
+      "ui": "UIText"
+    },
+    {
+      "note": "格式化",
+      "name_trn": "pref_format",
+      "ui": "UISDFormat"
+    },
+    {
+      "note": "卡检测",
+      "name_trn": "pref_card_detection",
+      "cmd": "sdcard_check",
+      "ui": "UIText"
+    },
+    {
+      "note": "高级设置",
+      "name_trn": "pref_advanced_settings",
+      "ui": "UIHeader"
+    },
+    {
+      "note": "停车监控",
+      "name_trn": "pref_parking_monitoring",
+      "cmd": "8309",
+      "ui": "UISwitch",
+      "on": "1",
+      "off": "0"
+    },
+    {
+      "note": "重力感应传感器",
+      "name_trn": "pref_gravity_sensor",
+      "cmd": "2011",
+      "ui": "UISeekBar",
+      "items": [
+        {
+          "value": "高",
+          "strRes": "pref_height"
+        },
+        {
+          "value": "中",
+          "strRes": "pref_mid"
+        },
+        {
+          "value": "低",
+          "strRes": "pref_low"
+        },
+        {
+          "value": "关闭",
+          "strRes": "pref_off"
+        }
+      ]
+    },
+    {
+      "note": "重力加速度",
+      "name_trn": "pref_gravity_acceleration",
+      "cmd": "8321",
+      "ui": "UISwitch"
+    },
+    {
+      "note": "光源频率",
+      "name_trn": "pref_light_frequency",
+      "cmd": "8215",
+      "ui": "UIList",
+      "items": [
+        {
+          "value": "50Hz"
+        },
+        {
+          "value": "60Hz"
+        }
+      ]
+    },
+    {
+      "note": "时间同步",
+      "name_trn": "pref_time_calibration",
+      "cmd": "sync_time",
+      "ui": "UIAction"
+    },
+    {
+      "note": "清理缓存",
+      "name_trn": "pref_cache_cleanup",
+      "cmd": "clean_cache",
+      "ui": "UICleanCache"
+    },
+    {
+      "note": "恢复出厂值",
+      "name_trn": "pref_reset",
+      "ui": "UIReset"
+    },
+    {
+      "note": "系统",
+      "name_trn": "pref_system",
+      "ui": "UIHeader"
+    },
+    {
+      "note": "文件路径",
+      "name_trn": "pref_local_album_path",
+      "cmd": "local_album_path",
+      "ui": "UIText"
+    },
+    {
+      "note": "设备版本",
+      "name_trn": "pref_fw_version",
+      "cmd": "fw_version",
+      "ui": "UIText"
+    },
+    {
+      "note": "APP版本",
+      "name_trn": "pref_app_version",
+      "cmd": "app_version",
+      "ui": "UIText"
+    }
+  ]
+}

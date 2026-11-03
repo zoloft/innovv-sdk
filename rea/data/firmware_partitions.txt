@@ -1,0 +1,15 @@
+K5.bin partition table (entries at 0x80, 12 bytes: offset,size,id)
+file_size=0x1DD0C98 (31263896)
+
+id=1 offset=0x000000C8 size=0x00000B38 (2872) end=0x00000C00
+  Config / MODELEXT header: model NT96685, build date 20210827, IK5 model strings
+id=2 offset=0x00000C00 size=0x003A56E8 (3823336) end=0x003A62E8
+  RTOS (uITRON) application, BCL1 LZ77 compressed, loads at 0x01800000. Contains HTTP/XML API, RTSP/streaming, recording, photo, Wi-Fi, GPS, file system.
+id=3 offset=0x003A62E8 size=0x000718E8 (465128) end=0x00417BD0
+  Bootloader / u-boot stage (ARM vector table; bootcmd=nvt_boot)
+id=5 offset=0x00417BD0 size=0x002F9046 (3117126) end=0x00710C16
+  Linux kernel uImage: Linux-4.1.0, ARM, uncompressed, load/entry 0x80002000
+id=9 offset=0x00710C18 size=0x014E0040 (21889088) end=0x01BF0C58
+  UBI volume rootfs (167 PEBs): UBIFS Linux rootfs (BusyBox, hostapd, wpa_supplicant, nvtrtspd, libnvtlive555, kernel modules)
+id=10 offset=0x01BF0C58 size=0x001E0040 (1966144) end=0x01DD0C98
+  UBI volume rootfs (15 PEBs): read/write overlay volume rootfs1 used by S20_FS_Overlay (initially empty)

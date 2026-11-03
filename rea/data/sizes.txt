@@ -1,0 +1,6 @@
+binaries/K5.bin 31263896
+binaries/INNOVV_1.0.38.20260618_APKPure.xapk 50629981
+work/xapk/cn.rxt.case.innovv.apk 14603937
+work/part2.dec.bin 7749740
+work/ubi_p9.img 21889024
+work/ubi_p10.img 1966080
