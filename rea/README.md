@@ -10,6 +10,11 @@ statements are static-analysis observations unless explicitly marked otherwise.
 See [06-evidence-ledger.md](06-evidence-ledger.md) for the distinction between
 observed, inferred, and unknown facts.
 
+> **Publishing note.** These are raw research notes. They include firmware
+> layout details and observations about default access-point credentials and
+> the firmware's root account. Review or remove this directory before making
+> the repository public if that information should not be disclosed.
+
 ## TL;DR
 
 The K5 exposes the standard **Novatek CarDV HTTP API**:
