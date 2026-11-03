@@ -117,20 +117,16 @@ The camera uses plain HTTP. Add a host-specific ATS exception:
 ```xml
 <key>NSAppTransportSecurity</key>
 <dict>
-    <key>NSExceptionDomains</key>
-    <dict>
-        <key>192.168.1.254</key>
-        <dict>
-            <key>NSExceptionAllowsInsecureHTTPLoads</key>
-            <true/>
-            <key>NSIncludesSubdomains</key>
-            <false/>
-        </dict>
-    </dict>
+    <!-- Allows HTTP to local-network hosts such as 192.168.1.254. -->
+    <key>NSAllowsLocalNetworking</key>
+    <true/>
 </dict>
 ```
 
-Do not enable `NSAllowsArbitraryLoads` for the whole app.
+`NSAllowsLocalNetworking` is the preferred option for a camera on the local
+network. If your app uses a hostname instead of an IP address and still needs an
+exception, add a host-specific `NSExceptionDomains` entry. Do not enable
+`NSAllowsArbitraryLoads` for the whole app.
 
 ### 3.3 Local network permission
 
