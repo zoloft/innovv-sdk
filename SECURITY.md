@@ -32,8 +32,11 @@ Known implications:
 3. Do not log `getWifiInfo()` output.
 4. Put `formatSdCard`, `resetSettings`, `deleteAllFiles`, `setWifi`, and
    firmware-update actions behind explicit user confirmation.
-5. Allow cleartext HTTP only for the camera host, not for the whole app.
-6. Keep the SDK and dependencies up to date.
+5. The SDK redacts `str=` values for Wi-Fi credential commands in its logs, but
+   a custom logger or HTTP proxy can still capture them. Do not enable verbose
+   external logging on credential changes.
+6. Allow cleartext HTTP only for the camera host, not for the whole app.
+7. Keep the SDK and dependencies up to date.
 
 ## Scope
 

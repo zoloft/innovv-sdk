@@ -75,7 +75,7 @@ internal class HttpTransport(
         var attempt = 0
         while (true) {
             try {
-                logger.log(InnovvLogLevel.DEBUG, "GET $url")
+                logger.log(InnovvLogLevel.DEBUG, "GET ${safeUrl(url)}")
                 val response = client.get(url)
                 if (response.status.isSuccess()) {
                     return response
@@ -93,7 +93,7 @@ internal class HttpTransport(
                     delay(backoffMillis(attempt))
                     continue
                 }
-                logger.log(InnovvLogLevel.WARN, "HTTP ${response.status.value} for $url")
+                logger.log(InnovvLogLevel.WARN, "HTTP ${response.status.value} for ${safeUrl(url)}")
                 throw InnovvHttpException(response.status.value, url, body.take(MAX_ERROR_BODY))
             } catch (cancelled: CancellationException) {
                 throw cancelled
@@ -104,19 +104,30 @@ internal class HttpTransport(
                     attempt += 1
                     logger.log(
                         InnovvLogLevel.WARN,
-                        "GET $url failed (attempt $attempt), retrying",
+                        "GET ${safeUrl(url)} failed (attempt $attempt), retrying",
                         failure,
                     )
                     delay(backoffMillis(attempt))
                     continue
                 }
-                throw InnovvNetworkException("GET $url failed", failure)
+                throw InnovvNetworkException("GET ${safeUrl(url)} failed", failure)
             }
         }
     }
 
     override fun close() {
         client.close()
+    }
+
+    private fun safeUrl(url: String): String {
+        val hidesValue = url.contains("cmd=3003") ||
+            url.contains("cmd=3004") ||
+            url.contains("cmd=3032")
+        return if (hidesValue && url.contains("&str=")) {
+            url.substringBefore("&str=") + "&str=[redacted]"
+        } else {
+            url
+        }
     }
 
     private fun backoffMillis(attempt: Int): Long = 150L * attempt

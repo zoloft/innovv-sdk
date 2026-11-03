@@ -109,7 +109,8 @@ ignored, not preserved.
 - HTTP GET only for camera commands and media.
 - `expectSuccess = false` so the SDK can inspect `<Status>` and HTTP statuses.
 - `HttpTimeout` with configurable connect/request/socket timeouts.
-- No logging interceptor. `InnovvLogger` logs method, URL, and status only.
+- No logging interceptor. `InnovvLogger` logs method, URL, and status only;
+  `str=` values for Wi-Fi credential commands are redacted.
 - Read requests can be retried (`InnovvConfig.maxRetries`).
 - Write commands are never retried automatically.
 - Media downloads stream chunks to a callback; they are not buffered.
