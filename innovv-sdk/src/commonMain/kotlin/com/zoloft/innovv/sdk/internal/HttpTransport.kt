@@ -38,16 +38,31 @@ internal class HttpTransport(
     private val config: InnovvConfig,
 ) : AutoCloseable {
     private val logger = config.logger
+    private val trafficLogger = config.trafficLogger
     private val maxRetries = config.maxRetries
 
     suspend fun getText(url: String, retryable: Boolean = true): String {
         val response = execute(url, retryable)
-        return response.bodyAsText()
+        val body = response.bodyAsText()
+        trafficLogger?.logResponse(
+            method = "GET",
+            url = safeUrl(url),
+            statusCode = response.status.value,
+            body = cappedTrafficBody(url, body),
+        )
+        return body
     }
 
     suspend fun getBytes(url: String): ByteArray {
         val response = execute(url, retryable = true)
-        return response.bodyAsBytes()
+        val bytes = response.bodyAsBytes()
+        trafficLogger?.logResponse(
+            method = "GET",
+            url = safeUrl(url),
+            statusCode = response.status.value,
+            body = "<binary ${bytes.size} bytes>",
+        )
+        return bytes
     }
 
     /**
@@ -58,16 +73,24 @@ internal class HttpTransport(
         val response = execute(url, retryable = false)
         val channel = response.bodyAsChannel()
         val buffer = ByteArray(STREAM_BUFFER_SIZE)
+        var totalBytes = 0L
         try {
             while (true) {
                 val read = channel.readAvailable(buffer, 0, buffer.size)
                 if (read == -1) break
                 if (read > 0) {
+                    totalBytes += read
                     onChunk(buffer.copyOf(read))
                 }
             }
         } finally {
             channel.cancel(CancellationException("stream complete"))
+            trafficLogger?.logStream(
+                method = "GET",
+                url = safeUrl(url),
+                statusCode = response.status.value,
+                bytes = totalBytes,
+            )
         }
     }
 
@@ -76,6 +99,7 @@ internal class HttpTransport(
         while (true) {
             try {
                 logger.log(InnovvLogLevel.DEBUG, "GET ${safeUrl(url)}")
+                trafficLogger?.logRequest("GET", safeUrl(url))
                 val response = client.get(url)
                 if (response.status.isSuccess()) {
                     return response
@@ -88,6 +112,12 @@ internal class HttpTransport(
                 } catch (_: Exception) {
                     ""
                 }
+                trafficLogger?.logResponse(
+                    method = "GET",
+                    url = safeUrl(url),
+                    statusCode = response.status.value,
+                    body = cappedTrafficBody(url, body),
+                )
                 if (retryable && response.status.value in 500..599 && attempt < maxRetries) {
                     attempt += 1
                     delay(backoffMillis(attempt))
@@ -110,6 +140,12 @@ internal class HttpTransport(
                     delay(backoffMillis(attempt))
                     continue
                 }
+                trafficLogger?.logError(
+                    method = "GET",
+                    url = safeUrl(url),
+                    message = failure.message ?: "request failed",
+                    throwable = failure,
+                )
                 throw InnovvNetworkException("GET ${safeUrl(url)} failed", failure)
             }
         }
@@ -132,8 +168,22 @@ internal class HttpTransport(
 
     private fun backoffMillis(attempt: Int): Long = 150L * attempt
 
+    private fun cappedTrafficBody(url: String, body: String): String {
+        val redacted = url.contains("cmd=3029") ||
+            url.contains("cmd=3003") ||
+            url.contains("cmd=3004") ||
+            url.contains("cmd=3032")
+        if (redacted) return "[redacted credential response]"
+        return if (body.length > MAX_TRAFFIC_BODY) {
+            body.take(MAX_TRAFFIC_BODY) + "\n... [truncated ${body.length - MAX_TRAFFIC_BODY} chars]"
+        } else {
+            body
+        }
+    }
+
     private companion object {
         const val STREAM_BUFFER_SIZE: Int = 64 * 1024
         const val MAX_ERROR_BODY: Int = 8 * 1024
+        const val MAX_TRAFFIC_BODY: Int = 64 * 1024
     }
 }

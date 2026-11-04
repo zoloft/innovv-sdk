@@ -35,6 +35,7 @@ public data class InnovvConfig(
     public val maxRetries: Int = 1,
     public val userAgent: String = "innovv-kmp-sdk/0.1.0",
     public val logger: InnovvLogger = InnovvLogger.None,
+    public val trafficLogger: InnovvTrafficLogger? = null,
 ) {
     init {
         require(baseUrl.startsWith("http://") || baseUrl.startsWith("https://")) {
@@ -90,4 +91,31 @@ public interface InnovvLogger {
             override fun log(level: InnovvLogLevel, message: String, throwable: Throwable?) = Unit
         }
     }
+}
+
+/**
+ * Optional full-traffic logger for diagnosing camera protocol problems.
+ *
+ * The callback is invoked on the caller's coroutine context. Implementations
+ * must be cheap and non-blocking; use a queue or a background writer for file
+ * output. Response bodies are capped by the SDK and sensitive Wi-Fi credential
+ * responses are redacted before this callback is invoked.
+ */
+public interface InnovvTrafficLogger {
+    /** Called immediately before an HTTP request is sent. */
+    public fun logRequest(method: String, url: String)
+
+    /** Called after a text response is read. */
+    public fun logResponse(method: String, url: String, statusCode: Int, body: String)
+
+    /** Called after a streaming response finishes. */
+    public fun logStream(method: String, url: String, statusCode: Int, bytes: Long)
+
+    /** Called when a request fails before a complete response is available. */
+    public fun logError(
+        method: String,
+        url: String,
+        message: String,
+        throwable: Throwable? = null,
+    )
 }
