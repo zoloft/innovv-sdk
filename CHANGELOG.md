@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here.
 
+## Unreleased
+
+- Add optional `InnovvTrafficLogger` and `InnovvConfig.trafficLogger` for
+  debug request/response capture. Bodies are capped and credential responses
+  are redacted.
+
 ## 0.1.0 — 2026-11-03
 
 Initial SDK release.

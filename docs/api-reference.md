@@ -55,6 +55,7 @@ data class InnovvConfig(
     val maxRetries: Int = 1,
     val userAgent: String = "innovv-kmp-sdk/0.1.0",
     val logger: InnovvLogger = InnovvLogger.None,
+    val trafficLogger: InnovvTrafficLogger? = null,
 )
 ```
 
@@ -69,6 +70,7 @@ data class InnovvConfig(
 | `maxRetries` | Retries for idempotent reads. Writes are never retried. |
 | `userAgent` | HTTP `User-Agent`. |
 | `logger` | Optional `InnovvLogger`. Response bodies are never logged. |
+| `trafficLogger` | Optional `InnovvTrafficLogger` for debug traffic capture. Response bodies are capped and credential responses are redacted. |
 
 ### `InnovvLogger`
 
@@ -80,6 +82,22 @@ interface InnovvLogger {
     companion object { val None: InnovvLogger }
 }
 ```
+
+### `InnovvTrafficLogger`
+
+```kotlin
+interface InnovvTrafficLogger {
+    fun logRequest(method: String, url: String)
+    fun logResponse(method: String, url: String, statusCode: Int, body: String)
+    fun logStream(method: String, url: String, statusCode: Int, bytes: Long)
+    fun logError(method: String, url: String, message: String, throwable: Throwable? = null)
+}
+```
+
+This is intended for debug builds only. Implementations must not block the
+network coroutine; queue records to a background writer. The SDK caps text
+bodies at 64 KiB, reports binary bodies by size, and redacts Wi-Fi credential
+commands (`3003`, `3004`, `3029`, `3032`).
 
 ## Client operations
 
